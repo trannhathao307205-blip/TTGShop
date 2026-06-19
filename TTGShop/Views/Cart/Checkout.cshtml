@@ -1,0 +1,77 @@
+﻿@model List<TTGShop.Models.CartItem>
+
+<div class="container my-5">
+    <h2 class="mb-4 fw-bold text-dark"><i class="fa-regular fa-credit-card text-orange me-2"></i>Thanh toán đơn hàng</h2>
+    
+    <form asp-controller="Cart" asp-action="ProcessCheckout" method="post">
+        @Html.AntiForgeryToken()
+
+        <div class="row">
+            <div class="col-lg-7 mb-4">
+                <div class="card border-0 shadow-sm p-4 bg-white rounded">
+                    <h5 class="fw-bold mb-4 text-dark border-bottom pb-2">Thông tin giao hàng</h5>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Họ và tên người nhận</label>
+                        <input type="text" name="customerName" class="form-control" placeholder="Nhập đầy đủ họ tên" required />
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Số điện thoại</label>
+                            <input type="tel" name="phone" class="form-control" placeholder="Nhập số điện thoại" required />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Địa chỉ Email (Nếu có)</label>
+                            <input type="email" name="email" class="form-control" placeholder="username@gmail.com" />
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Địa chỉ nhận hàng cụ thể</label>
+                        <textarea name="address" class="form-control" rows="3" placeholder="Số nhà, tên đường, phường/xã, quận/huyện, tỉnh/thành phố" required></textarea>
+                    </div>
+
+                    <h5 class="fw-bold mb-3 text-dark border-bottom pb-2">Phương thức thanh toán</h5>
+                    <div class="form-check p-3 border rounded mb-2 bg-light">
+                        <input class="form-check-input ms-1" type="radio" name="paymentMethod" value="COD" id="payCod" checked>
+                        <label class="form-check-label ms-3 fw-bold text-dark" for="payCod">
+                            <i class="fa-solid fa-truck text-success me-2"></i> Thanh toán khi nhận hàng (COD)
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="card border-0 shadow-sm p-4 bg-white rounded">
+                    <h5 class="fw-bold mb-3 text-dark border-bottom pb-2">Đơn hàng của bạn</h5>
+                    
+                    <div class="overflow-auto mb-3" style="max-height: 250px;">
+                        @foreach (var item in ViewBag.CartItems as List<TTGShop.Models.CartItem>)
+                        {
+                            <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom border-light">
+                                <div class="d-flex align-items-center">
+                                    <img src="@item.ImageUrl" class="rounded border me-2" style="width: 45px; height: 45px; object-fit: cover;" />
+                                    <div>
+                                        <p class="mb-0 fw-bold small text-dark text-truncate" style="max-width: 180px;">@item.ProductName</p>
+                                        <small class="text-muted">SL: x @item.Quantity</small>
+                                    </div>
+                                </div>
+                                <span class="fw-semibold text-dark small">@item.TotalPrice.ToString("N0") đ</span>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="d-flex justify-content-between fs-5 mb-4 pt-2 border-top">
+                        <span class="fw-bold">Thành tiền:</span>
+                        <span class="text-danger fw-bold fs-4">@ViewBag.TotalAmount.ToString("N0") đ</span>
+                    </div>
+
+                    <button type="submit" class="btn w-100 py-3 fw-bold text-white fs-5" style="background-color: #ff4500;">
+                        XÁC NHẬN ĐẶT MUA
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -12,6 +12,16 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectio
 
 builder.Services.AddControllersWithViews();
 
+// >>> THÊM 2 DÒNG NÀY VÀO ĐÂY <<<
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Giỏ hàng tự xóa sau 30 phút rời trang
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddDefaultTokenProviders()
     .AddDefaultUI()
@@ -22,6 +32,7 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddScoped<IProductRepository, EFProductRepository>();
 builder.Services.AddScoped<ICategoryRepository, EFCategoryRepository>();
+builder.Services.AddScoped<IOrderRepository, EFOrderRepository>();
 
 
 var app = builder.Build();
@@ -37,8 +48,9 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
-    // --- THÊM ĐOẠN CODE MIDDLEWARE NÀY ---
-    app.UseAuthentication(); // Xác thực danh tính (Đăng nhập)
+app.UseSession();
+// --- THÊM ĐOẠN CODE MIDDLEWARE NÀY ---
+app.UseAuthentication(); // Xác thực danh tính (Đăng nhập)
     app.UseAuthorization();  // Phân quyền người dùng
 
     app.MapRazorPages();     // Map các trang giao diện mặc định của Identity UI
