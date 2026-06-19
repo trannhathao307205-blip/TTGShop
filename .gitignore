@@ -1,0 +1,13 @@
+.vs/
+*.slnx
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+bin/
+obj/
+.vscode/
+*.db
+*.sqlite
+appsettings.*.json
+*.log
