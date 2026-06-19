@@ -1,0 +1,64 @@
+﻿@model TTGShop.Models.Product
+
+@{
+    ViewData["Title"] = "Cập nhật sản phẩm";
+}
+
+<div class="container mt-5">
+    <div class="card shadow border-0 col-md-6 mx-auto p-4">
+        <h3 class="text-warning mb-4 text-center">Cập nhật sản phẩm</h3>
+        
+        <form asp-action="Update" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Id" />
+            
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label">Tên sản phẩm</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            
+            <div class="mb-3">
+                <label asp-for="Price" class="form-label">Giá</label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label">Mô tả</label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Ảnh mới (Chọn nếu muốn thay đổi)</label>
+                <input type="file" name="imageUrl" class="form-control" accept="image/*" />
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <div class="mt-2">
+                        <small class="text-muted">Ảnh hiện tại:</small><br />
+                        <img src="@Model.ImageUrl" style="max-width: 100px; height: auto;" class="img-thumbnail" />
+                    </div>
+                }
+            </div>
+            
+            <div class="mb-3">
+                <label asp-for="CategoryId" class="form-label">Danh mục</label>
+                <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.Categories">
+                    <option value="">-- Chọn danh mục --</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-warning">Lưu thay đổi</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TTG Shop</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body>
+   
+    <header class="py-3">
+        <div class="container d-flex align-items-center">
+            <a class="navbar-brand fw-bold fs-3" href="/">TTG Shop </a>
+            <div class="flex-grow-1 mx-5">
+                <input type="text" class="form-control" placeholder="Tìm kiếm hơn 20.000 sản phẩm...">
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-expand-lg" style="background-color: #ff4500;">
+        <div class="container">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Tất cả danh mục
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" asp-controller="Product" asp-action="Index">Tất cả sản phẩm</a></li>
+                        
+                        @if (ViewBag.Categories != null)
+                        {
+                            <!-- Trường hợp 1: Nếu ViewBag là SelectList (ở các trang Thêm/Sửa sản phẩm) -->
+                            if (ViewBag.Categories is Microsoft.AspNetCore.Mvc.Rendering.SelectList selectList)
+                            {
+                                foreach (var item in selectList)
+                                {
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Product" asp-action="Index" asp-route-categoryId="@item.Value">
+                                            @item.Text
+                                        </a>
+                                    </li>
+                                }
+                            }
+                            else if (ViewBag.Categories is IEnumerable<TTGShop.Models.Category> categories)
+                            {
+                                foreach (var category in categories)
+                                {
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Product" asp-action="Index" asp-route-categoryId="@category.Id">
+                                            @category.Name
+                                        </a>
+                                    </li>
+                                }
+                            }
+                        }
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" asp-controller="Product" asp-action="Index">Sản phẩm</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" asp-controller="Categories" asp-action="Index">Danh mục</a>
+                </li>
+            </ul>
+            <li class="nav-item">
+                <partial name="_LoginPartial" />
+            </li>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="bg-light pt-5 pb-3 mt-5 border-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <h6>Liên hệ</h6>
+                    <p class="text-success fw-bold">(+84) 0313-728-397</p>
+                </div>
+                <div class="col-md-3">
+                    <h6>Liên kết</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#">About Besa</a></li>
+                        <li><a href="#">Sell on Besa</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6>Hỗ trợ</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">How to Buy</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6>Mạng xã hội</h6>
+                    <div class="d-flex gap-2">
+                        <i class="fa-brands fa-facebook"></i>
+                        <i class="fa-brands fa-youtube"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

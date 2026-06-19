@@ -1,0 +1,76 @@
+/* 1. Header chính */
+header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.navbar-brand {
+    color: #ff4500 !important; /* Màu cam đỏ chủ đạo */
+    font-weight: 800;
+    font-size: 1.5rem;
+}
+
+/* 2. Thanh Menu */
+.navbar {
+    background-color: #ff4500;
+    padding: 0.5rem 0;
+}
+
+.nav-link {
+    color: white !important;
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+}
+
+    .nav-link:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+    }
+
+/* 3. Footer chuyên nghiệp */
+footer {
+    background-color: #f8f9fa;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+    footer h6 {
+        font-weight: bold;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        color: #000;
+    }
+
+    footer a {
+        color: #666;
+        text-decoration: none;
+    }
+
+        footer a:hover {
+            color: #ff4500;
+        }
+
+/* 4. Điều chỉnh khoảng cách cho thiết bị di động */
+@media (max-width: 768px) {
+    .header-main .flex-grow-1 {
+        margin: 1rem 0 !important;
+    }
+}
+/* Hiệu ứng nổi card khi di chuột */
+.card {
+    transition: all 0.3s ease-in-out;
+}
+
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.2) !important;
+    }
+
+/* Nút bấm */
+.btn {
+    transition: all 0.2s;
+}
+
+    .btn:hover {
+        transform: scale(1.05);
+    }

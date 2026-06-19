@@ -1,0 +1,12 @@
+﻿@model TTGShop.Models.Product
+<div class="container mt-5 text-center">
+    <div class="card p-4 col-md-6 mx-auto">
+        <h3 class="text-danger">Bạn có chắc chắn xóa?</h3>
+        <p>Sản phẩm: <strong>@Model.Name</strong></p>
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn btn-danger">Xóa vĩnh viễn</button>
+            <a asp-action="Index" class="btn btn-light">Hủy</a>
+        </form>
+    </div>
+</div>  

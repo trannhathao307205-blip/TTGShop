@@ -1,0 +1,35 @@
+﻿@model TTGShop.Models.Category
+
+@{
+    ViewData["Title"] = "Thêm danh mục";
+}
+
+<div class="container mt-5">
+    <div class="card shadow border-0 col-md-6 mx-auto p-4">
+        <h3 class="text-primary mb-4 text-center">Thêm danh mục mới</h3>
+        
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label">Tên danh mục</label>
+                <input asp-for="Name" class="form-control" placeholder="Nhập tên danh mục..." />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 mb-3">Lưu danh mục</button>
+            
+            <div class="text-center">
+                <a asp-action="Index" class="text-decoration-none text-secondary">
+                    <i class="fa-solid fa-arrow-left me-1"></i> Quay lại danh sách
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

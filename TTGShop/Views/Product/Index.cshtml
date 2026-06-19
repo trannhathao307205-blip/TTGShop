@@ -1,0 +1,110 @@
+﻿@model IEnumerable<TTGShop.Models.Product>
+@{
+    ViewData["Title"] = "Danh sách sản phẩm";
+}
+
+<style>
+    /* Cố định chiều cao khung ảnh và cắt ảnh tràn viền */
+    .img-container {
+        height: 200px; 
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8f9fa;
+    }
+    .card-img-top {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Giúp ảnh fill đầy khung mà không bị méo */
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="text-primary fw-bold mb-0">Danh sách sản phẩm</h3>
+        <a asp-action="Add" class="btn btn-success shadow-sm">
+            <i class="fa fa-plus me-1"></i> Thêm sản phẩm
+        </a>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Context.Request.Query["searchString"]))
+    {
+        <div class="alert alert-light border shadow-sm mb-4 d-flex justify-content-between align-items-center rounded-3">
+            <div>
+                <i class="fa-solid fa-magnifying-glass text-primary me-2"></i>
+                Kết quả tìm kiếm cho: <strong class="text-danger">"@Context.Request.Query["searchString"]"</strong>
+                <span class="text-muted ms-2">(@Model.Count() sản phẩm được tìm thấy)</span>
+            </div>
+            <a asp-action="Index" class="btn btn-sm btn-outline-secondary">Xóa bộ lọc</a>
+        </div>
+    }
+
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+        @if (!Model.Any())
+        {
+            <div class="col-12 text-center text-muted py-5">
+                <i class="fa-solid fa-box-open fs-1 mb-3 d-block text-secondary"></i>
+                Không tìm thấy sản phẩm nào phù hợp với yêu cầu.
+            </div>
+        }
+        else
+        {
+            foreach (var item in Model)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="img-container">
+                            <img src="@item.ImageUrl" class="card-img-top" alt="@item.Name">
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h6 class="card-title text-truncate mb-2">
+                                <a asp-action="Display" asp-route-id="@item.Id" class="text-decoration-none text-dark fw-bold">@item.Name</a>
+                            </h6>
+                            <p class="text-danger fw-bold mb-3 mt-auto">@item.Price.ToString("N0") VNĐ</p>
+                            <div class="d-flex gap-2">
+                                <a asp-action="Update" asp-route-id="@item.Id" class="btn btn-sm btn-outline-warning w-50">
+                                    <i class="fa-solid fa-pen-to-square"></i> Sửa
+                                </a>
+                                <button class="btn btn-sm btn-outline-danger w-50" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.Id">
+                                    <i class="fa-solid fa-trash-can"></i> Xóa
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title"><i class="fa-solid fa-triangle-exclamation me-1"></i> Xác nhận xóa</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body py-4">
+                Bạn có chắc chắn muốn xóa sản phẩm này không? Hành động này không thể hoàn tác.
+            </div>
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <form asp-action="Delete" method="post">
+                    <input type="hidden" name="id" id="productIdToDelete" />
+                    <button type="submit" class="btn btn-danger">Xác nhận xóa</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            document.getElementById('productIdToDelete').value = button.getAttribute('data-id');
+        });
+    </script>
+}

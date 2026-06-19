@@ -1,0 +1,69 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Đăng nhập";
+}
+
+<div class="container mt-5">
+    <div class="card shadow border-0 col-md-6 mx-auto p-4">
+        <h3 class="text-primary mb-4 text-center">Đăng nhập tài khoản</h3>
+        
+        <form id="account" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            
+            <div class="mb-3">
+                <label asp-for="Input.Email" class="form-label">Địa chỉ Email</label>
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Input.Password" class="form-label">Mật khẩu</label>
+                <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Nhập mật khẩu" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+
+            <div class="form-check mb-3">
+                <input class="form-check-input" asp-for="Input.RememberMe" />
+                <label asp-for="Input.RememberMe" class="form-check-label">
+                    Ghi nhớ đăng nhập
+                </label>
+            </div>
+
+            <button id="login-submit" type="submit" class="btn btn-primary w-100 mb-3">Đăng nhập</button>
+            
+            <div class="text-center mt-3 fs-6">
+                <p class="mb-1">
+                    <a id="forgot-password" asp-page="./ForgotPassword" class="text-decoration-none">Quên mật khẩu?</a>
+                </p>
+                <p class="mb-1">
+                    Chưa có tài khoản? <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-decoration-none fw-bold">Đăng ký ngay</a>
+                </p>
+                <p class="mb-0">
+                    <a id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="text-decoration-none text-muted">Gửi lại email xác thực</a>
+                </p>
+            </div>
+        </form>
+
+        @if ((Model.ExternalLogins?.Count ?? 0) > 0)
+        {
+            <hr class="my-4" />
+            <div class="text-center">
+                <p class="text-muted">Hoặc đăng nhập bằng dịch vụ khác</p>
+                <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    @foreach (var provider in Model.ExternalLogins!)
+                    {
+                        <button type="submit" class="btn btn-outline-secondary w-100 mb-2" name="provider" value="@provider.Name" title="Đăng nhập bằng tài khoản @provider.DisplayName">
+                            @provider.DisplayName
+                        </button>
+                    }
+                </form>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

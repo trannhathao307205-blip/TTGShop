@@ -9,5 +9,6 @@ obj/
 .vscode/
 *.db
 *.sqlite
+appsettings.json
 appsettings.*.json
 *.log

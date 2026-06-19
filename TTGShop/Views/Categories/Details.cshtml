@@ -1,0 +1,32 @@
+﻿@model TTGShop.Models.Category
+
+@{
+    ViewData["Title"] = "Chi tiết danh mục";
+}
+
+<div class="container mt-5">
+    <div class="card shadow border-0 col-md-6 mx-auto p-4">
+        <h3 class="text-primary mb-3 text-center">Chi tiết danh mục</h3>
+        <p class="text-muted text-center mb-4">Thông tin chi tiết của danh mục trong hệ thống</p>
+        
+        <div class="bg-light p-4 rounded shadow-sm mb-4">
+            <div class="row align-items-center">
+                <div class="col-sm-4 fw-bold text-secondary">
+                    Tên danh mục:
+                </div>
+                <div class="col-sm-8 fs-5 fw-bold text-dark">
+                    @Html.DisplayFor(model => model.Name)
+                </div>
+            </div>
+        </div>
+        
+        <div class="d-flex gap-2">
+            <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary flex-grow-1">
+                <i class="fa-solid fa-pen-to-square me-1"></i> Chỉnh sửa
+            </a>
+            <a asp-action="Index" class="btn btn-light border flex-grow-1 text-secondary">
+                <i class="fa-solid fa-arrow-left me-1"></i> Quay lại danh sách
+            </a>
+        </div>
+    </div>
+</div>
