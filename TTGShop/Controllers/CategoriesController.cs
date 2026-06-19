@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization; // >>> PHẢI THÊM DÒNG NÀY ĐỂ PHÂN QUYỀN
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,8 @@ using TTGShop.Models;
 
 namespace TTGShop.Controllers
 {
+    // Cấu hình mặc định bảo vệ toàn bộ Controller: Chỉ Admin mới có quyền truy cập
+    [Authorize(Roles = "Admin")]
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -18,13 +21,19 @@ namespace TTGShop.Controllers
             _context = context;
         }
 
-        // GET: Categories
+        // =========================================================================
+        // TRANG INDEX: Mở khóa cho tất cả mọi người (Kể cả khách chưa đăng nhập)
+        // =========================================================================
+        [AllowAnonymous] // >>> Ai cũng có thể xem danh sách danh mục
         public async Task<IActionResult> Index()
         {
             return View(await _context.Categories.ToListAsync());
         }
 
-        // GET: Categories/Details/5
+        // =========================================================================
+        // TRANG DETAILS: Mở khóa cho tất cả mọi người
+        // =========================================================================
+        [AllowAnonymous] // >>> Ai cũng có thể xem chi tiết danh mục
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -42,6 +51,10 @@ namespace TTGShop.Controllers
             return View(category);
         }
 
+        // =========================================================================
+        // CÁC HÀM QUẢN TRỊ DƯỚI ĐÂY TỰ ĐỘNG ĐƯỢC BẢO VỆ BỞI QUYỀN "Admin"
+        // =========================================================================
+
         // GET: Categories/Create
         public IActionResult Create()
         {
@@ -49,8 +62,6 @@ namespace TTGShop.Controllers
         }
 
         // POST: Categories/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name")] Category category)
@@ -81,8 +92,6 @@ namespace TTGShop.Controllers
         }
 
         // POST: Categories/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Category category)

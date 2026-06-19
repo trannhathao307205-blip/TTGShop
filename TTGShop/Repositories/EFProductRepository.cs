@@ -40,5 +40,24 @@ namespace TTGShop.Repositories
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
         }
+
+        //Xử lý Logic Tìm kiếm Thông minh (Fuzzy / Partial Search)
+
+        public async Task<IEnumerable<Product>> SearchProductsAsync(string searchTerm)
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                return await _context.Products.ToListAsync();
+            }
+
+            searchTerm = searchTerm.Trim().ToLower();
+
+            // Tìm kiếm gần đúng theo tên sản phẩm hoặc mô tả (nếu có)
+            return await _context.Products
+                .Where(p => p.Name.ToLower().Contains(searchTerm)
+                         || (p.Category != null && p.Category.Name.ToLower().Contains(searchTerm)))
+                .Include(p => p.Category) // Nếu cần hiển thị tên danh mục
+                .ToListAsync();
+        }
     }
 }

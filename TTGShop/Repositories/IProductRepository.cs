@@ -9,5 +9,7 @@ namespace TTGShop.Repositories
         Task AddAsync(Product product);
         Task UpdateAsync(Product product);
         Task DeleteAsync(int id);
+        //Xử lý Logic Tìm kiếm Thông minh (Fuzzy / Partial Search)
+        Task<IEnumerable<Product>> SearchProductsAsync(string searchTerm);
     }
 }
